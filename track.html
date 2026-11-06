@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Package | Sainath Courier Service</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Poppins', sans-serif; } </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold text-orange-500">Sainath <span class="text-white">Courier</span></a>
+      <nav class="hidden md:flex space-x-8 font-medium">
+        <a href="index.html" class="hover:text-orange-400 transition">Home</a>
+        <a href="about.html" class="hover:text-orange-400 transition">About Us</a>
+        <a href="services.html" class="hover:text-orange-400 transition">Services</a>
+        <a href="track.html" class="text-orange-500">Track Package</a>
+        <a href="contact.html" class="hover:text-orange-400 transition">Contact</a>
+      </nav>
+      <a href="contact.html" class="bg-orange-500 hover:bg-orange-600 px-5 py-2 rounded-xl text-sm font-semibold transition">Help Center</a>
+    </div>
+  </header>
+
+  <section class="bg-slate-900 text-white py-12 px-6 text-center">
+    <h1 class="text-3xl font-bold">Track Your Delivery</h1>
+    <p class="text-gray-400 mt-2 text-sm">Real-time parcel tracking powered by Sainath Courier Service smart logistics engine.</p>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-6 py-12 w-full my-auto space-y-8">
+    
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-0">
+      
+      <div class="relative h-64 md:h-auto min-h-[320px]">
+        <img src="./images.jpg/track-banner.jpg" alt="Parcel Tracking System" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-slate-900/40 flex flex-col justify-end p-8 text-white">
+          <span class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full w-fit mb-2">Live Tracking 2.0</span>
+          <p class="font-bold text-xl leading-snug">End-to-End Visibility for Every Shipment.</p>
+          <p class="text-gray-200 text-xs mt-1">Monitored 24/7 across ground and air transport networks.</p>
+        </div>
+      </div>
+
+      <div class="p-8 md:p-10 flex flex-col justify-center space-y-5">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900">Enter Tracking Number</h2>
+          <p class="text-gray-500 text-xs mt-1">Enter your Waybill / AWB tracking code below.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input id="trackInput" type="text" placeholder="e.g. SNC1001" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-orange-500 text-sm font-medium">
+          <button onclick="trackPackage()" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-semibold transition shrink-0 shadow-md">Track Now</button>
+        </div>
+
+        <div class="pt-2 border-t border-gray-100">
+          <p class="text-xs text-gray-500 mb-2 font-medium">Try these demo tracking codes:</p>
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button onclick="quickTrack('SNC1001')" class="bg-gray-100 hover:bg-orange-100 hover:text-orange-600 px-3 py-1.5 rounded-lg text-gray-600 font-semibold transition">SNC1001 (In Transit)</button>
+            <button onclick="quickTrack('SNC1002')" class="bg-gray-100 hover:bg-orange-100 hover:text-orange-600 px-3 py-1.5 rounded-lg text-gray-600 font-semibold transition">SNC1002 (Out for Delivery)</button>
+            <button onclick="quickTrack('SNC1003')" class="bg-gray-100 hover:bg-orange-100 hover:text-orange-600 px-3 py-1.5 rounded-lg text-gray-600 font-semibold transition">SNC1003 (Delivered)</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="statusResult" class="hidden bg-white rounded-3xl p-8 shadow-xl border border-gray-100 space-y-8 transition-all duration-500">
+      
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-gray-100 pb-6 gap-4">
+        <div>
+          <span class="text-xs text-gray-400 uppercase font-semibold tracking-wider">Waybill Reference</span>
+          <h3 id="resWaybill" class="text-2xl font-bold text-slate-900">#SNC1001</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="resBadge" class="bg-orange-100 text-orange-600 font-bold text-xs px-4 py-2 rounded-full border border-orange-200">IN TRANSIT</span>
+          <button onclick="window.print()" class="text-xs text-slate-500 hover:text-slate-800 border border-gray-200 px-3 py-2 rounded-xl">Print Receipt</button>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6">Delivery Progress Timeline</h4>
+        <div class="grid grid-cols-4 gap-2 relative">
+          
+          <div class="text-center space-y-2">
+            <div id="step1Dot" class="w-8 h-8 mx-auto rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-xs shadow">✓</div>
+            <p id="step1Text" class="text-xs font-bold text-slate-800">Order Placed</p>
+            <p class="text-[10px] text-gray-400">10:00 AM</p>
+          </div>
+
+          <div class="text-center space-y-2">
+            <div id="step2Dot" class="w-8 h-8 mx-auto rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-xs shadow">✓</div>
+            <p id="step2Text" class="text-xs font-bold text-slate-800">Dispatched</p>
+            <p class="text-[10px] text-gray-400">02:30 PM</p>
+          </div>
+
+          <div class="text-center space-y-2">
+            <div id="step3Dot" class="w-8 h-8 mx-auto rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-xs shadow">✓</div>
+            <p id="step3Text" class="text-xs font-bold text-slate-800">In Transit</p>
+            <p class="text-[10px] text-gray-400">On the way</p>
+          </div>
+
+          <div class="text-center space-y-2">
+            <div id="step4Dot" class="w-8 h-8 mx-auto rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-xs">4</div>
+            <p id="step4Text" class="text-xs font-medium text-gray-400">Delivered</p>
+            <p class="text-[10px] text-gray-400">Pending</p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-gray-100 text-xs">
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 space-y-1">
+          <p class="text-gray-400 font-semibold">Sender / Origin</p>
+          <p id="resOrigin" class="font-bold text-slate-800 text-sm">Central Warehouse, Hub A</p>
+          <p class="text-gray-500">Dispatch Time: Today, 10:00 AM</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 space-y-1">
+          <p class="text-gray-400 font-semibold">Destination Address</p>
+          <p id="resDest" class="font-bold text-slate-800 text-sm">Customer Residence, Sector 4</p>
+          <p class="text-gray-500">Expected: Today by 6:00 PM</p>
+        </div>
+        <div class="bg-orange-50 p-4 rounded-2xl border border-orange-100 space-y-1">
+          <p class="text-orange-600 font-semibold">Courier Executive Contact</p>
+          <p id="resAgent" class="font-bold text-slate-900 text-sm">Ramesh Kumar (+91 98765 12345)</p>
+          <p class="text-orange-700">Vehicle: Delivery Van #5</p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer class="bg-slate-900 text-gray-400 py-8 mt-auto border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm">
+      <p>&copy; 2026 Sainath Courier Service. Built with excellence.</p>
+    </div>
+  </footer>
+
+  <script>
+    const mockData = {
+      'SNC1001': {
+        waybill: 'SNC1001',
+        badge: 'IN TRANSIT',
+        badgeColor: 'bg-orange-100 text-orange-600 border-orange-200',
+        origin: 'Mumbai Sorting Hub',
+        dest: 'Hyderabad Delivery Station',
+        agent: 'Rajesh Sharma (+91 98111 22233)',
+        steps: [true, true, true, false]
+      },
+      'SNC1002': {
+        waybill: 'SNC1002',
+        badge: 'OUT FOR DELIVERY',
+        badgeColor: 'bg-blue-100 text-blue-600 border-blue-200',
+        origin: 'Local Express Hub',
+        dest: 'Doorstep Address, Block B',
+        agent: 'Suresh Verma (+91 98444 55566)',
+        steps: [true, true, true, true]
+      },
+      'SNC1003': {
+        waybill: 'SNC1003',
+        badge: 'DELIVERED',
+        badgeColor: 'bg-green-100 text-green-700 border-green-200',
+        origin: 'Bangalore Hub',
+        dest: 'Corporate Office, Floor 3',
+        agent: 'Delivered & Signed by Recipient',
+        steps: [true, true, true, true]
+      }
+    };
+
+    function quickTrack(id) {
+      document.getElementById('trackInput').value = id;
+      trackPackage();
+    }
+
+    function trackPackage() {
+      const input = document.getElementById('trackInput').value.trim().toUpperCase();
+      const resultBox = document.getElementById('statusResult');
+
+      if (!input) {
+        alert('Please enter a tracking code.');
+        return;
+      }
+
+      // Load specific data or default search
+      const data = mockData[input] || {
+        waybill: input,
+        badge: 'IN TRANSIT',
+        badgeColor: 'bg-orange-100 text-orange-600 border-orange-200',
+        origin: 'Central Sorting Hub',
+        dest: 'Destination Address',
+        agent: 'Assigned Courier Agent (+91 98765 43210)',
+        steps: [true, true, true, false]
+      };
+
+      // Populate UI
+      document.getElementById('resWaybill').innerText = '#' + data.waybill;
+      const badgeElem = document.getElementById('resBadge');
+      badgeElem.innerText = data.badge;
+      badgeElem.className = `font-bold text-xs px-4 py-2 rounded-full border ${data.badgeColor}`;
+
+      document.getElementById('resOrigin').innerText = data.origin;
+      document.getElementById('resDest').innerText = data.dest;
+      document.getElementById('resAgent').innerText = data.agent;
+
+      // Update Step 4 Dot based on status
+      const step4Dot = document.getElementById('step4Dot');
+      const step4Text = document.getElementById('step4Text');
+
+      if (data.steps[3]) {
+        step4Dot.className = 'w-8 h-8 mx-auto rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-xs shadow';
+        step4Dot.innerText = '✓';
+        step4Text.className = 'text-xs font-bold text-slate-800';
+      } else {
+        step4Dot.className = 'w-8 h-8 mx-auto rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-xs';
+        step4Dot.innerText = '4';
+        step4Text.className = 'text-xs font-medium text-gray-400';
+      }
+
+      resultBox.classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
